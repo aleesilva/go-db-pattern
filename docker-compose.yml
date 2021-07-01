@@ -1,0 +1,21 @@
+version: '3'
+
+volumes: 
+  golang-db:
+    external: true
+    
+services: 
+  postgres:
+    image: postgres
+    container_name: golang-db
+    restart: always
+    user: postgres
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - golang-db:/var/lib/postgres
+    environment: 
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: golang-db
+      TZ: GMT
+
