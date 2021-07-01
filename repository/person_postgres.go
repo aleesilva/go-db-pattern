@@ -19,7 +19,7 @@ func NewPersonRepositoryPostgres(db *sql.DB) *PersonRepositoryPostgres {
 func (p *PersonRepositoryPostgres) Get(id string) (entity.Person, error) {
 	var person entity.Person
 
-	stmt, err := p.db.Prepare("select id, name, email from persons where id=?")
+	stmt, err := p.db.Prepare("select id, name, email from persons where id=$1")
 
 	if err != nil {
 		return entity.Person{}, err

@@ -15,7 +15,7 @@ const (
 	port     = 5432
 	user     = "postgres"
 	password = "123"
-	dbname   = "golang-db"
+	dbname   = "golangdb"
 )
 
 func Error(err error) {

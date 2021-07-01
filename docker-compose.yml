@@ -16,6 +16,6 @@ services:
       - golang-db:/var/lib/postgres
     environment: 
       POSTGRES_PASSWORD: 123
-      POSTGRES_DB: golang-db
+      POSTGRES_DB: golangdb
       TZ: GMT
 
