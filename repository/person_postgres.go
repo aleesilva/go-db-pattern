@@ -35,7 +35,7 @@ func (p *PersonRepositoryPostgres) Get(id string) (entity.Person, error) {
 }
 
 func (p *PersonRepositoryPostgres) Create(person entity.Person) (entity.Person, error) {
-	stmt, err := p.db.Prepare(`insert into persons (id, name, email) values (? , ? , ?)`)
+	stmt, err := p.db.Prepare(`insert into persons (id, name, email) values ($1 , $2 , $3)`)
 
 	if err != nil {
 		return entity.Person{}, err

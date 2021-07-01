@@ -6,6 +6,8 @@ import (
 
 	"github.com/aleesilva/go-db-pattern/controller"
 	"github.com/aleesilva/go-db-pattern/repository"
+
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -23,12 +25,12 @@ func Error(err error) {
 }
 
 func main() {
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disabled", host, port, user, password, dbname)
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	// fmt.Println(psqlconn)
 	// db := repository.PersonsMemoryDB{Persons: []entity.Person{}}
 	// repositoryMemory := repository.NewPersonRepositoryMemory(db)
 	// db, _ := sql.Open("sqlite3", "./sqlite.repository")
-	db, err := sql.Open("postgres", psqlconn)
+	db, err := openDB("postgres", dsn)
 	if err != nil {
 		panic(err)
 	}
@@ -37,7 +39,25 @@ func main() {
 	repositoryPostgres := repository.NewPersonRepositoryPostgres(db)
 	ct := controller.NewPersonController(repositoryPostgres)
 
-	persons, _ := ct.Create("teste user", "teste@teste.com.br")
+	person, err := ct.Create("teste user", "teste@teste.com.br")
 
-	fmt.Println(persons)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%s %T", person, person)
+}
+
+func openDB(driver string, dsn string) (*sql.DB, error) {
+	db, err := sql.Open(driver, dsn)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }
